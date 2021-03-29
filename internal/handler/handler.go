@@ -1,20 +1,15 @@
 package handler
 
 import (
-	"github.com/todoapps2021/telegrambot/internal/storage"
-	"gopkg.in/tucnak/telebot.v2"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
+	"github.com/todoapps2021/telegrambot/internal/service"
 )
 
 type Handler struct {
-	reader  storage.Reader
-	creator storage.Creator
-	bot     *telebot.Bot
+	bot     *tgbotapi.BotAPI
+	service *service.Service
 }
 
-func New(bot *telebot.Bot, reader storage.Reader, creator storage.Creator) *Handler {
-	return &Handler{
-		bot:     bot,
-		reader:  reader,
-		creator: creator,
-	}
+func New(bot *tgbotapi.BotAPI, service *service.Service) *Handler {
+	return &Handler{bot: bot, service: service}
 }
