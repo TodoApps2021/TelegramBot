@@ -60,7 +60,7 @@ func (t *TodoListPostgres) GetAll(userId int) ([]models.TodoList, error) { //Don
 	defer conn.Release()
 
 	lists := make([]models.TodoList, 0)
-	query := fmt.Sprintf("SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul on tl.id = ul.list_id WHERE ul.user_id = $1",
+	query := fmt.Sprintf("SELECT tl.id, tl.title, tl.description FROM %s tl INNER JOIN %s ul on tl.id = ul.list_id WHERE ul.user_id = $1 ORDER BY tl.id",
 		todoListsTable, usersListsTable)
 
 	rows, err := conn.Query(ctx, query, userId)

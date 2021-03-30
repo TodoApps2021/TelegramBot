@@ -26,7 +26,7 @@ func (t *TodoItemPostgres) GetAll(userId, listId int) ([]models.TodoItem, error)
 
 	items := make([]models.TodoItem, 0)
 	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti INNER JOIN %s li on li.item_id = ti.id
-									INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2`,
+									INNER JOIN %s ul on ul.list_id = li.list_id WHERE li.list_id = $1 AND ul.user_id = $2 ORDER BY ti.id`,
 		todoItemsTable, listsItemsTable, usersListsTable)
 
 	rows, err := conn.Query(ctx, query, listId, userId)

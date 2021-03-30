@@ -123,11 +123,16 @@ func (h *Handler) Login(message *tgbotapi.Message) error {
 		}
 	}()
 
-	return nil
+	text = "Success\\! 🎉\n_Write command to get_ '/list'"
+	msg := tgbotapi.NewMessage(message.Chat.ID, text)
+	msg.ParseMode = "MarkdownV2"
+	_, err := h.bot.Send(msg)
+
+	return err
 }
 
 func (h *Handler) UnknownCommand(message *tgbotapi.Message) error {
-	text := fmt.Sprintf("You write '%s'\nI don't know this command.", message.Text)
+	text := fmt.Sprintf("You write '%s'\nI didn't know this command.", message.Text)
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, text)
 

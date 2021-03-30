@@ -51,7 +51,13 @@ func (h *Handler) ShowItems(cbq *tgbotapi.CallbackQuery) error {
 	}
 
 	for _, v := range items {
-		text := fmt.Sprintf("ID: %v\nTitle: %v\nDescription: %v\nStatus: %v", v.Id, v.Title, v.Description, v.Done)
+		var status string
+		if v.Done {
+			status = "✅"
+		} else {
+			status = "❌"
+		}
+		text := fmt.Sprintf("ID: %v\nTitle: %v\nDescription: %v\nStatus: %v", v.Id, v.Title, v.Description, status)
 		msg := tgbotapi.NewMessage(cbq.Message.Chat.ID, text)
 
 		if v.Done {
@@ -122,7 +128,7 @@ func (h *Handler) BackItem(cbq *tgbotapi.CallbackQuery) error {
 		return err
 	}
 
-	text := strings.Replace(cbq.Message.Text, "true", "false", 1)
+	text := strings.Replace(cbq.Message.Text, "✅", "❌", 1)
 	msg := tgbotapi.NewEditMessageText(cbq.Message.Chat.ID, cbq.Message.MessageID, text)
 	msg.ReplyMarkup = &INLINE_KEYBOARD_ITEM_1
 	if _, e := h.bot.Send(msg); e != nil {
@@ -155,7 +161,7 @@ func (h *Handler) DoneItem(cbq *tgbotapi.CallbackQuery) error {
 		return err
 	}
 
-	text := strings.Replace(cbq.Message.Text, "false", "true", 1)
+	text := strings.Replace(cbq.Message.Text, "❌", "✅", 1)
 	msg := tgbotapi.NewEditMessageText(cbq.Message.Chat.ID, cbq.Message.MessageID, text)
 	msg.ReplyMarkup = &INLINE_KEYBOARD_ITEM_2
 	if _, e := h.bot.Send(msg); e != nil {
